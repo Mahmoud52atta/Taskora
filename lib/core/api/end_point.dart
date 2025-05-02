@@ -1,5 +1,4 @@
 class EndPoint {
-  
   static String baseUrl = "https://todo.iraqsapp.com/";
   static String signIn = "auth/login";
   static String signUp = "auth/register";
@@ -21,7 +20,7 @@ class ApiKey {
   static const String address = "address";
   static String message = "message";
   static String expericneLevel = "level";
-  static String name = "displayName";
+  static String displyName = "displayName";
 
   static String confirmPassword = "confirmPassword";
   static String location = "location";

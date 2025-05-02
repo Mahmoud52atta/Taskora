@@ -1,9 +1,16 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do_app/core/cash/cash_helper.dart';
 import 'package:to_do_app/core/helper_function/generate_goRout.dart';
+import 'package:to_do_app/core/helper_function/get_it.dart';
 import 'package:to_do_app/featuers/splash/presentation/views/splash_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await CacheHelper.init();
+  setupServiceLocator(CacheHelper.sharedPreferences);
+
   runApp(DevicePreview(
       enabled: true, builder: (context) => const RebuildToDoApp()));
 }

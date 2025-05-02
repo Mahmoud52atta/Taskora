@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_app/featuers/home/presentation/views/home_view.dart';
 import 'package:to_do_app/featuers/regester/presentation/views/sign_in_view.dart';
 import 'package:to_do_app/featuers/regester/presentation/views/sign_up_view.dart';
 import 'package:to_do_app/featuers/splash/presentation/views/splash_view.dart';
@@ -14,7 +15,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const SignInView());
     case SignUpView.routeName:
       return MaterialPageRoute(builder: (context) => const SignUpView());
-
+    case HomeView.routeName:
+      return MaterialPageRoute(builder: (context) => const HomeView());
     default:
       return MaterialPageRoute(builder: (context) => const Scaffold());
   }

@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 
 class SectionDropDown extends StatelessWidget {
+  final Function(String?)? onChanged;
+  final String? Function(String?)? validator;
   const SectionDropDown({
     super.key,
+    this.onChanged,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+        validator: validator,
         enableFeedback: false,
         dropdownColor: Colors.white,
         decoration: InputDecoration(
@@ -24,6 +29,6 @@ class SectionDropDown extends StatelessWidget {
         ]
             .map((level) => DropdownMenuItem(value: level, child: Text(level)))
             .toList(),
-        onChanged: (value) {});
+        onChanged: onChanged);
   }
 }
