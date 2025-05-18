@@ -3,7 +3,12 @@ import 'package:to_do_app/core/utils/font_styles.dart';
 
 class PasswordTextField extends StatelessWidget {
   const PasswordTextField({
-    super.key, required this.obscureText, this.onPressed, required this.icon, this.validator, this.onChanged,
+    super.key,
+    required this.obscureText,
+    this.onPressed,
+    required this.icon,
+    this.validator,
+    this.onChanged,
   });
   final bool obscureText;
   final void Function()? onPressed;
@@ -31,7 +36,7 @@ class PasswordTextField extends StatelessWidget {
         //   scale: 3.5,
         // ),
         labelText: 'Password...',
-        labelStyle: FontStyles.fontStyleRegular14,
+        labelStyle: FontStyles.fontStyleRegular14(context),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),

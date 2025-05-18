@@ -21,16 +21,16 @@ class SignUpModel extends SignupEntity {
   });
 
   factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
-        id: json[ApiKey.id] as String?,
-        displayName: json[ApiKey.displyName] as String?,
-        accessToken: json[ApiKey.accessToken] as String?,
-        refreshToken: json[ApiKey.refreshToken] as String?,
-        name: json[ApiKey.displyName] as String,
-        phoneNumber: json[ApiKey.phoneNumber]as String,
-        experienceYear: json[ApiKey.experinceYear]as String,
-        experienceLevel: json[ApiKey.expericneLevel]as String,
-        address: json[ApiKey.address]as String,
-        password: json[ApiKey.password]as String,
+        id: json[ApiKey.id] ?? '',
+        displayName: json[ApiKey.displyName] ?? '',
+        accessToken: json[ApiKey.accessToken] ?? '',
+        refreshToken: json[ApiKey.refreshToken] ?? '',
+        name: json[ApiKey.displyName] ?? '',
+        phoneNumber: json[ApiKey.phoneNumber] ?? '',
+        experienceYear: json[ApiKey.experinceYear] ?? '',
+        experienceLevel: json[ApiKey.expericneLevel] ?? '',
+        address: json[ApiKey.address] ?? '',
+        password: json[ApiKey.password] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

@@ -46,4 +46,6 @@ class Assets {
   /// Assets for imagesIraq (IQ)
   /// assets/images/Iraq (IQ).png
   static const String imagesIraq = "assets/images/Iraq (IQ).png";
+  static const String imagesProfile = "assets/images/Frame (3).png";
+  static const String imagesLogOut = "assets/images/Frame (4).png";
 }

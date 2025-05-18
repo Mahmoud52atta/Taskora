@@ -17,7 +17,7 @@ class SectionTextField extends StatelessWidget {
         onChanged: onChanged,
         validator: validator,
         decoration: InputDecoration(
-            hintStyle: FontStyles.fontStyleRegular14,
+            hintStyle: FontStyles.fontStyleRegular14(context),
             hintText: hintText,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

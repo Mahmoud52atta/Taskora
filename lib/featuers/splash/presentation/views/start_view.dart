@@ -25,15 +25,15 @@ class StartView extends StatelessWidget {
             children: [
               Text(
                 'Task Management &\n        To-Do List',
-                style: FontStyles.fontStyleBold24,
+                style: FontStyles.fontStyleBold24(context),
               ),
               const SizedBox(
                 height: 16,
               ),
               Text(
                 'This productive tool is designed to help \n          you better manage your task \n            project-wise conveniently!',
-                style:
-                    FontStyles.fontStyleRegular14.copyWith(color: Colors.grey),
+                style: FontStyles.fontStyleRegular14(context)
+                    .copyWith(color: Colors.grey),
               ),
               const SizedBox(
                 height: 32,
@@ -44,7 +44,7 @@ class StartView extends StatelessWidget {
                   children: [
                     Text(
                       'Let’s Start ',
-                      style: FontStyles.fontStyleBold24
+                      style: FontStyles.fontStyleBold24(context)
                           .copyWith(fontSize: 19, color: Colors.white),
                     ),
                     Image.asset(

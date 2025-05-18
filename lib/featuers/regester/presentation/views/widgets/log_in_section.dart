@@ -39,9 +39,9 @@ class _LoginSectionState extends State<LoginSection> {
         listener: (context, state) {
           if (state is LogInSuccess) {
             Navigator.pushReplacementNamed(context, HomeView.routeName);
-          }else if(state is LogInFailure){
-             ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(state.errorMessage)));
+          } else if (state is LogInFailure) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.errorMessage)));
           }
         },
         builder: (context, state) {
@@ -54,7 +54,7 @@ class _LoginSectionState extends State<LoginSection> {
                   children: [
                     Text(
                       'Login',
-                      style: FontStyles.fontStyleBold24,
+                      style: FontStyles.fontStyleBold24(context),
                     ),
                     const SizedBox(
                       height: 24,
@@ -116,7 +116,7 @@ class _LoginSectionState extends State<LoginSection> {
                       },
                       child: Text(
                         'Sign in',
-                        style: FontStyles.fontStyleBold24
+                        style: FontStyles.fontStyleBold24(context)
                             .copyWith(fontSize: 16, color: Colors.white),
                       )),
               const SizedBox(
@@ -127,7 +127,7 @@ class _LoginSectionState extends State<LoginSection> {
                 children: [
                   Text(
                     'Didn’t have any account?',
-                    style: FontStyles.fontStyleRegular14,
+                    style: FontStyles.fontStyleRegular14(context),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -136,7 +136,7 @@ class _LoginSectionState extends State<LoginSection> {
                     },
                     child: Text(
                       ' Sign Up here',
-                      style: FontStyles.fontStyleRegular14
+                      style: FontStyles.fontStyleRegular14(context)
                           .copyWith(color: kPrimaryColor),
                     ),
                   ),

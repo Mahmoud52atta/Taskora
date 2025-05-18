@@ -34,27 +34,27 @@ class AuthRemoteDataSource {
   }
 
   Future<Either<ServerException, SignupEntity>> register({
-    required String name,
     required String phoneNumber,
-    required String experienceYear,
-    required String experienceLevel,
-    required String address,
     required String password,
+    required String name,
+    required String experienceYear,
+    required String address,
+    required String experienceLevel,
   }) async {
     try {
       final responce = await apiConsumer.post(EndPoint.signUp, data: {
-        ApiKey.displyName: name,
         ApiKey.phoneNumber: phoneNumber,
-        ApiKey.experinceYear: experienceYear,
-        ApiKey.expericneLevel: experienceLevel,
-        ApiKey.address: address,
         ApiKey.password: password,
+        ApiKey.displyName: name,
+        ApiKey.experinceYear: experienceYear,
+        ApiKey.address: address,
+        ApiKey.expericneLevel: experienceLevel,
       });
       final user = SignUpModel.fromJson(responce);
-      await CacheHelper.saveData(
-          key: ApiKey.accessToken, value: user.accessToken);
-      await CacheHelper.saveData(
-          key: ApiKey.refreshToken, value: user.refreshToken);
+      // await CacheHelper.saveData(
+      //     key: ApiKey.accessToken, value: user.accessToken);
+      // await CacheHelper.saveData(
+      //     key: ApiKey.refreshToken, value: user.refreshToken);
       return Right(user);
     } on ServerException catch (e) {
       return Left(ServerException(errModel: e.errModel));

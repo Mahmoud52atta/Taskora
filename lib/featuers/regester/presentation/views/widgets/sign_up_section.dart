@@ -58,29 +58,14 @@ class _SignUpSectionState extends State<SignUpSection> {
                   children: [
                     Text(
                       'Sign Up',
-                      style: FontStyles.fontStyleBold24,
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    SectionTextField(
-                      onChanged: (value) {
-                        name = value;
-                      },
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      },
-                      hintText: ' Name...',
+                      style: FontStyles.fontStyleBold24(context),
                     ),
                     const SizedBox(
                       height: 24,
                     ),
                     PhoneTextField(
                       onChanged: (value) {
-                        name = value.completeNumber;
+                        phoneNumber = value.completeNumber;
                       },
                       validator: (value) {
                         if (value?.completeNumber.isEmpty ?? true) {
@@ -89,49 +74,6 @@ class _SignUpSectionState extends State<SignUpSection> {
                         return null;
                       },
                     ),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    SectionTextField(
-                      onChanged: (value) {
-                        yearsOfExperience = value;
-                      },
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Please enter your years of experience';
-                        }
-                        return null;
-                      },
-                      hintText: 'Years of experience...',
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    SectionDropDown(
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Please enter your experience level';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        selectedExperienceLevel = value;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    SectionTextField(
-                        validator: (value) {
-                          if (value?.isEmpty ?? true) {
-                            return 'Please enter your address';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          address = value;
-                        },
-                        hintText: 'Adress...'),
                     const SizedBox(
                       height: 24,
                     ),
@@ -154,6 +96,64 @@ class _SignUpSectionState extends State<SignUpSection> {
                     const SizedBox(
                       height: 24,
                     ),
+                    SectionTextField(
+                      onChanged: (value) {
+                        name = value;
+                      },
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                      hintText: ' Name...',
+                    ),
+                    const SizedBox(
+                      height: 18,
+                    ),
+                    SectionTextField(
+                      onChanged: (value) {
+                        yearsOfExperience = value;
+                      },
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter your years of experience';
+                        }
+                        return null;
+                      },
+                      hintText: 'Years of experience...',
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    SectionTextField(
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          address = value;
+                        },
+                        hintText: 'Adress...'),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    SectionDropDown(
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter your experience level';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        selectedExperienceLevel = value;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
                   ],
                 ),
               ),
@@ -166,17 +166,18 @@ class _SignUpSectionState extends State<SignUpSection> {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
                           context.read<SignUpCubit>().register(
-                              name: name!,
-                              phoneNumber: phoneNumber!,
-                              experienceYear: yearsOfExperience!,
-                              experienceLevel: selectedExperienceLevel!,
-                              address: address!,
-                              password: password!);
+                                phoneNumber: phoneNumber!,
+                                password: password!,
+                                name: name!,
+                                experienceYear: yearsOfExperience!,
+                                address: address!,
+                                experienceLevel: selectedExperienceLevel!,
+                              );
                         }
                       },
                       child: Text(
                         'Sign Up',
-                        style: FontStyles.fontStyleBold24
+                        style: FontStyles.fontStyleBold24(context)
                             .copyWith(fontSize: 16, color: Colors.white),
                       )),
               const SizedBox(
@@ -187,7 +188,7 @@ class _SignUpSectionState extends State<SignUpSection> {
                 children: [
                   Text(
                     'Already have any account?',
-                    style: FontStyles.fontStyleRegular14,
+                    style: FontStyles.fontStyleRegular14(context),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -196,7 +197,7 @@ class _SignUpSectionState extends State<SignUpSection> {
                     },
                     child: Text(
                       '  Sign in',
-                      style: FontStyles.fontStyleRegular14
+                      style: FontStyles.fontStyleRegular14(context)
                           .copyWith(color: kPrimaryColor),
                     ),
                   ),

@@ -18,14 +18,15 @@ class SectionDropDown extends StatelessWidget {
         dropdownColor: Colors.white,
         decoration: InputDecoration(
             hintText: 'Choose experience Level...',
-            hintStyle: FontStyles.fontStyleMedium12.copyWith(fontSize: 14),
+            hintStyle:
+                FontStyles.fontStyleMedium12(context).copyWith(fontSize: 14),
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
         items: [
-          'Entry Level',
-          'Mid Level',
-          'Senior Level',
-          'Manager',
+          'fresh',
+          'Junior',
+          'midLevel',
+          'Senior',
         ]
             .map((level) => DropdownMenuItem(value: level, child: Text(level)))
             .toList(),

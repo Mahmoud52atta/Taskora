@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/core/cash/cash_helper.dart';
 import 'package:to_do_app/core/helper_function/generate_goRout.dart';
 import 'package:to_do_app/core/helper_function/get_it.dart';
-import 'package:to_do_app/featuers/splash/presentation/views/splash_view.dart';
+import 'package:to_do_app/featuers/home/presentation/views/home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,7 @@ class RebuildToDoApp extends StatelessWidget {
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         onGenerateRoute: generateRoute,
-        initialRoute: SplashView.routeName,
+        initialRoute: HomeView.routeName,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white, // خلفية التطبيق
