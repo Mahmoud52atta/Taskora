@@ -42,10 +42,12 @@ class Assets {
   /// Assets for imagesImage 2
   /// assets/images/image 2.png
   static const String imagesImage2 = "assets/images/image 2.png";
+  static const String imagesFrame5 = "assets/images/Frame (5).png";
 
   /// Assets for imagesIraq (IQ)
   /// assets/images/Iraq (IQ).png
   static const String imagesIraq = "assets/images/Iraq (IQ).png";
   static const String imagesProfile = "assets/images/Frame (3).png";
   static const String imagesLogOut = "assets/images/Frame (4).png";
+  static const String imagesBotton = "assets/images/Frame.png";
 }
