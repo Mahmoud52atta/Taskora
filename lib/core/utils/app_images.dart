@@ -50,4 +50,5 @@ class Assets {
   static const String imagesProfile = "assets/images/Frame (3).png";
   static const String imagesLogOut = "assets/images/Frame (4).png";
   static const String imagesBotton = "assets/images/Frame.png";
+  static const String imagesQRCode = "assets/images/image 3.png";
 }

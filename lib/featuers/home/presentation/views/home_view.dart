@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_app/core/helper_function/const_space.dart';
 import 'package:to_do_app/core/utils/app_images.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/home_view_appBar.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/item_task.dart';
@@ -38,11 +39,12 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final horizontalPadding = MediaQuery.sizeOf(context).width * 0.05;
+    // final horizontalPadding = MediaQuery.sizeOf(context).width * 0.05;
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        padding: EdgeInsets.symmetric(
+            horizontal: ConstSpace.horizontalPadding(context)),
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
