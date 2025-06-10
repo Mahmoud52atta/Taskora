@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:to_do_app/constant.dart';
@@ -5,7 +7,8 @@ import 'package:to_do_app/core/utils/app_images.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 
 class ImageField extends StatefulWidget {
-  const ImageField({super.key});
+  const ImageField({super.key, this.onImageSelected});
+  final Function(String?)? onImageSelected;
 
   @override
   State<ImageField> createState() => _ImageFieldState();
@@ -13,6 +16,7 @@ class ImageField extends StatefulWidget {
 
 class _ImageFieldState extends State<ImageField> {
   XFile? _image;
+  String? _imagePath;
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -21,7 +25,9 @@ class _ImageFieldState extends State<ImageField> {
     if (image != null) {
       setState(() {
         _image = image;
+        _imagePath = image.path;
       });
+      widget.onImageSelected?.call(_imagePath);
     }
   }
 
@@ -32,8 +38,8 @@ class _ImageFieldState extends State<ImageField> {
         if (_image != null) ...[
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              _image!.path,
+            child: Image.file(
+              File(_image!.path),
               height: 200,
               width: double.infinity,
               fit: BoxFit.cover,

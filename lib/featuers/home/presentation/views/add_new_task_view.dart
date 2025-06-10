@@ -9,9 +9,16 @@ import 'package:to_do_app/featuers/home/presentation/views/widget/task_descripti
 import 'package:to_do_app/featuers/home/presentation/views/widget/periority_field.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/date_time_field.dart';
 
-class AddNewTaskView extends StatelessWidget {
+class AddNewTaskView extends StatefulWidget {
   const AddNewTaskView({super.key});
   static const routeName = 'addNewTaskView';
+
+  @override
+  State<AddNewTaskView> createState() => _AddNewTaskViewState();
+}
+
+class _AddNewTaskViewState extends State<AddNewTaskView> {
+  String? _selectedImagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,14 @@ class AddNewTaskView extends StatelessWidget {
               text: 'Add New Task',
             )),
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
-            const SliverToBoxAdapter(child: ImageField()),
+            SliverToBoxAdapter(child: ImageField(
+              onImageSelected: (String? imagePath) {
+                // Store the image path to use when creating/updating the todo
+                setState(() {
+                  _selectedImagePath = imagePath;
+                });
+              },
+            )),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
             const SliverToBoxAdapter(child: TaskTitleField()),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -48,7 +62,10 @@ class AddNewTaskView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16))),
                         backgroundColor:
                             const WidgetStatePropertyAll(kPrimaryColor)),
-                    onPressed: null, // TODO: Add onPressed logic
+                    onPressed: () {
+                      // TODO: Create task with _selectedImagePath
+                      print('Selected image path: $_selectedImagePath');
+                    },
                     child: Text(
                       'Add task',
                       style: FontStyles.fontStyleBold16(context)
