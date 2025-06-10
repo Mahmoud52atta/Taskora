@@ -15,33 +15,47 @@ class _PeriorityFieldState extends State<PeriorityField> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      iconSize: 30,
-      iconEnabledColor: kPrimaryColor,
-      borderRadius: BorderRadius.circular(16),
-      style: FontStyles.fontStyleBold16(context).copyWith(color: kPrimaryColor),
-      decoration: InputDecoration(
-          filled: true,
-          fillColor: kSecondColor,
-          prefixIcon: Image.asset(
-            scale: 4.5,
-            Assets.imagesFlage,
-            width: 5,
-            height: 5,
-          ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16))),
-      value: _selectedPriority,
-      items: const [
-        DropdownMenuItem(value: 'High Priority', child: Text('High Priority')),
-        DropdownMenuItem(
-            value: 'Medium Priority', child: Text('Medium Priority')),
-        DropdownMenuItem(value: 'Low Priority', child: Text('Low Priority')),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Priority',
+          style: FontStyles.fontStyleRegular14(context),
+        ),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          iconSize: 30,
+          iconEnabledColor: kPrimaryColor,
+          borderRadius: BorderRadius.circular(16),
+          style: FontStyles.fontStyleBold16(context)
+              .copyWith(color: kPrimaryColor),
+          decoration: InputDecoration(
+              filled: true,
+              fillColor: kSecondColor,
+              prefixIcon: Image.asset(
+                scale: 4.5,
+                Assets.imagesFlage,
+                // width: 5,
+                // height: 5,
+              ),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(16))),
+          value: _selectedPriority,
+          items: const [
+            DropdownMenuItem(
+                value: 'High Priority', child: Text('High Priority')),
+            DropdownMenuItem(
+                value: 'Medium Priority', child: Text('Medium Priority')),
+            DropdownMenuItem(
+                value: 'Low Priority', child: Text('Low Priority')),
+          ],
+          onChanged: (value) {
+            setState(() {
+              _selectedPriority = value!;
+            });
+          },
+        ),
       ],
-      onChanged: (value) {
-        setState(() {
-          _selectedPriority = value!;
-        });
-      },
     );
   }
 }

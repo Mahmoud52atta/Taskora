@@ -14,7 +14,7 @@ class ElevatedBottonSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Container(
+        child: SizedBox(
           // decoration: BoxDecoration(
           //     color: kPrimaryColor, borderRadius: BorderRadius.circular(12)),
           height: 55,

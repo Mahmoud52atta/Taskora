@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/core/helper_function/const_space.dart';
 import 'package:to_do_app/core/utils/app_images.dart';
+import 'package:to_do_app/featuers/home/presentation/views/add_new_task_view.dart';
+import 'package:to_do_app/featuers/home/presentation/views/profile_view.dart';
+import 'package:to_do_app/featuers/home/presentation/views/task_details_view.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/home_view_appBar.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/item_task.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/filtering_all_tasks_status.dart';
@@ -65,9 +68,14 @@ class _HomeViewState extends State<HomeView> {
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => const Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: ItemTask(),
+                (context, index) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, TaskDetailsView.routeName);
+                    },
+                    child: const ItemTask(),
+                  ),
                 ),
                 childCount: 10,
               ),
@@ -91,7 +99,9 @@ class _HomeViewState extends State<HomeView> {
                 FloatingActionButton(
                   heroTag: "addBtn",
                   backgroundColor: const Color(0xff5F33E1),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, AddNewTaskView.routeName);
+                  },
                   child: const Icon(Icons.add, color: Colors.white),
                 ),
               ],

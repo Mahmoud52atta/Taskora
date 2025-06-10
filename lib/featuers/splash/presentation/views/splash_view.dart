@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/featuers/splash/presentation/views/start_view.dart';
 
 class SplashView extends StatefulWidget {
-  const SplashView({Key? key}) : super(key: key);
+  const SplashView({super.key});
   static const String routeName = 'splash';
 
   @override

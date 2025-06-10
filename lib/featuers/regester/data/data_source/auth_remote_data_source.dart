@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:to_do_app/core/api/api_consumer.dart';
-import 'package:to_do_app/core/api/dio_consumer.dart';
 import 'package:to_do_app/core/api/end_point.dart';
 import 'package:to_do_app/core/cash/cash_helper.dart';
 import 'package:to_do_app/core/errors/service_errore.dart';

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/core/cash/cash_helper.dart';
 import 'package:to_do_app/core/helper_function/generate_goRout.dart';
 import 'package:to_do_app/core/helper_function/get_it.dart';
-import 'package:to_do_app/featuers/home/presentation/views/home_view.dart';
-import 'package:to_do_app/featuers/home/presentation/views/task_details_view.dart';
+import 'package:to_do_app/featuers/splash/presentation/views/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,8 +11,7 @@ void main() async {
   await CacheHelper.init();
   setupServiceLocator(CacheHelper.sharedPreferences);
 
-  runApp(DevicePreview(
-      enabled: true, builder: (context) => const RebuildToDoApp()));
+  runApp(const RebuildToDoApp());
 }
 
 class RebuildToDoApp extends StatelessWidget {
@@ -25,7 +23,7 @@ class RebuildToDoApp extends StatelessWidget {
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         onGenerateRoute: generateRoute,
-        initialRoute: TaskDetailsView.routeName,
+        initialRoute: SplashView.routeName,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white, // خلفية التطبيق

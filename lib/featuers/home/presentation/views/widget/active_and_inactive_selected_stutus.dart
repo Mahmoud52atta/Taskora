@@ -33,7 +33,7 @@ class InActiveSelectedStatus extends StatelessWidget {
       child: Text(
         text,
         style: FontStyles.fontStyleRegular14(context).copyWith(
-            color: Color(
+            color: const Color(
               0xff7C7C80,
             ),
             fontSize: 16),

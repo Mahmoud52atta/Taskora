@@ -13,7 +13,7 @@ class SignUpView extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => SignUpCubit(getIt<AuthRepoImp>()),
-        child: SignUpBody(),
+        child: const SignUpBody(),
       ),
     );
   }

@@ -40,15 +40,15 @@ class _AllCategoryTasksState extends State<AllCategoryTasks> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text("All", style: FontStyles.fontStyleBold16(context)),
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text("Inprogress"),
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text("Waiting"),
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text("Finished"),
         ),

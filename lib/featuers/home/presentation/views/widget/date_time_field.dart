@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/constant.dart';
 import 'package:to_do_app/core/utils/app_images.dart';
+import 'package:to_do_app/core/utils/font_styles.dart';
 
 class DateTimeField extends StatefulWidget {
   const DateTimeField({super.key});
@@ -41,19 +42,20 @@ class _DateTimeFieldState extends State<DateTimeField> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'End Date',
-                  style: TextStyle(fontSize: 10),
+                  style: FontStyles.fontStyleRegular14(context),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 2,
                 ),
                 InkWell(
                   child: Text(
                     _selectedDate == null
                         ? 'Choose a date'
                         : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    style: FontStyles.fontStyleRegular14(context)
+                        .copyWith(fontSize: 16, color: kPrimaryColor),
                   ),
                 ),
               ],
