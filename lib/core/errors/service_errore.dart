@@ -22,7 +22,10 @@ void handleDioExceptions(DioException e) {
     case DioExceptionType.connectionError:
       throw ServerException(errModel: ErrorModel.fromJson(e.response!.data));
     case DioExceptionType.unknown:
-      throw ServerException(errModel: ErrorModel.fromJson(e.response!.data,));
+      throw ServerException(
+          errModel: ErrorModel.fromJson(
+        e.response!.data,
+      ));
     case DioExceptionType.badResponse:
       switch (e.response?.statusCode) {
         case 400: // Bad request

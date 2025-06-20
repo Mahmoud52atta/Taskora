@@ -21,7 +21,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case HomeView.routeName:
       return MaterialPageRoute(builder: (context) => const HomeView());
     case TaskDetailsView.routeName:
-      return MaterialPageRoute(builder: (context) => const TaskDetailsView());
+      final args = settings.arguments as Map<String, dynamic>?;
+      final details = args?['details'];
+      return MaterialPageRoute(
+        builder: (context) => TaskDetailsView(details: details),
+      );
     case AddNewTaskView.routeName:
       return MaterialPageRoute(builder: (context) => const AddNewTaskView());
     case ProfileView.routeName:

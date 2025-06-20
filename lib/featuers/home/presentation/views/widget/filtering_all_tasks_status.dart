@@ -14,43 +14,43 @@ class _FilteringAllTasksStatusState extends State<FilteringAllTasksStatus> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: CustomScrollView(scrollDirection: Axis.horizontal, slivers: [
-        SliverToBoxAdapter(
-          child: Row(
-            children: [
-              GestureDetector(
-                  onTap: () => updateIndex(0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: AllTasksStatus(
-                        isSelected: selectedIndex == 0, text: status[0]),
-                  )),
-              GestureDetector(
-                  onTap: () => updateIndex(1),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: AllTasksStatus(
-                        isSelected: selectedIndex == 1, text: status[1]),
-                  )),
-              GestureDetector(
-                  onTap: () => updateIndex(2),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: AllTasksStatus(
-                        isSelected: selectedIndex == 2, text: status[2]),
-                  )),
-              GestureDetector(
-                  onTap: () => updateIndex(3),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: AllTasksStatus(
-                        isSelected: selectedIndex == 3, text: status[3]),
-                  ))
-            ],
-          ),
-        )
-      ]),
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+                onTap: () => updateIndex(0),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: AllTasksStatus(
+                      isSelected: selectedIndex == 0, text: status[0]),
+                )),
+            GestureDetector(
+                onTap: () => updateIndex(1),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: AllTasksStatus(
+                      isSelected: selectedIndex == 1, text: status[1]),
+                )),
+            GestureDetector(
+                onTap: () => updateIndex(2),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: AllTasksStatus(
+                      isSelected: selectedIndex == 2, text: status[2]),
+                )),
+            GestureDetector(
+                onTap: () => updateIndex(3),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: AllTasksStatus(
+                      isSelected: selectedIndex == 3, text: status[3]),
+                ))
+          ],
+        ),
+      ),
     );
   }
 

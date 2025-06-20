@@ -7,14 +7,14 @@ import 'package:to_do_app/core/utils/app_images.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 
 class ImageField extends StatefulWidget {
-  const ImageField({super.key, this.onImageSelected});
-  final Function(String?)? onImageSelected;
+  const ImageField({super.key, this.onChanged});
+  final Function(String?)? onChanged;
 
   @override
-  State<ImageField> createState() => _ImageFieldState();
+  State<ImageField> createState() => ImageFieldState();
 }
 
-class _ImageFieldState extends State<ImageField> {
+class ImageFieldState extends State<ImageField> {
   XFile? _image;
   String? _imagePath;
 
@@ -27,7 +27,8 @@ class _ImageFieldState extends State<ImageField> {
         _image = image;
         _imagePath = image.path;
       });
-      widget.onImageSelected?.call(_imagePath);
+      // Notify parent widget of the selected image path
+      widget.onChanged?.call(_imagePath);
     }
   }
 
@@ -74,4 +75,6 @@ class _ImageFieldState extends State<ImageField> {
       ],
     );
   }
+
+  String? get selectedImagePath => _imagePath;
 }

@@ -4,8 +4,9 @@ import 'package:to_do_app/core/utils/app_images.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 
 class DateTimeField extends StatefulWidget {
-  const DateTimeField({super.key});
-
+  const DateTimeField({super.key, this.onChanged, this.child});
+  final Function(String?)? onChanged;
+  final Widget? child;
   @override
   State<DateTimeField> createState() => _DateTimeFieldState();
 }
@@ -23,6 +24,10 @@ class _DateTimeFieldState extends State<DateTimeField> {
       setState(() {
         _selectedDate = picked;
       });
+      // Call the callback with the formatted date string
+      final formattedDate =
+          '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
+      widget.onChanged?.call(formattedDate);
     }
   }
 
@@ -50,13 +55,11 @@ class _DateTimeFieldState extends State<DateTimeField> {
                   height: 2,
                 ),
                 InkWell(
-                  child: Text(
-                    _selectedDate == null
-                        ? 'Choose a date'
-                        : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
-                    style: FontStyles.fontStyleRegular14(context)
-                        .copyWith(fontSize: 16, color: kPrimaryColor),
-                  ),
+                  child: widget.child ??
+                      Text(
+                        '${_selectedDate?.day}/${_selectedDate?.month}/${_selectedDate?.year}',
+                        style: FontStyles.fontStyleRegular14(context),
+                      ),
                 ),
               ],
             ),

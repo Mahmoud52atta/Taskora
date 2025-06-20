@@ -3,6 +3,12 @@ class EndPoint {
   static String signIn = "auth/login";
   static String signUp = "auth/register";
   static String logout = "auth/logout";
+  static String getHomeData = "todos";
+  static String deleteTask = "todos/67ffad01a1328e4fc6d1c322";
+  static String editTask = "todos/";
+  static String addTask = "todos";
+  static String getProfile = "auth/profile";
+
   static String getUserDataEndPoint(id) {
     return "user/get-user/$id";
   }

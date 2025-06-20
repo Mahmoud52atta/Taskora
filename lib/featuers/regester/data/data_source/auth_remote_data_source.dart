@@ -4,8 +4,10 @@ import 'package:to_do_app/core/api/end_point.dart';
 import 'package:to_do_app/core/cash/cash_helper.dart';
 import 'package:to_do_app/core/errors/service_errore.dart';
 import 'package:to_do_app/featuers/regester/data/models/log_in_model.dart';
+import 'package:to_do_app/featuers/regester/data/models/profile_model.dart';
 import 'package:to_do_app/featuers/regester/data/models/sign_up_model.dart';
 import 'package:to_do_app/featuers/regester/domain/entities/login_entity.dart';
+import 'package:to_do_app/featuers/regester/domain/entities/profile_entity.dart';
 import 'package:to_do_app/featuers/regester/domain/entities/sign_up_entity.dart';
 
 class AuthRemoteDataSource {
@@ -23,6 +25,7 @@ class AuthRemoteDataSource {
       final user = LogInModel.fromJson(responce);
       await CacheHelper.saveData(
           key: ApiKey.accessToken, value: user.accessToken);
+      print('Access Token: ${user.accessToken}');
       await CacheHelper.saveData(
           key: ApiKey.refreshToken, value: user.refreshToken);
       return Right(user);
@@ -53,6 +56,30 @@ class AuthRemoteDataSource {
       //     key: ApiKey.accessToken, value: user.accessToken);
       // await CacheHelper.saveData(
       //     key: ApiKey.refreshToken, value: user.refreshToken);
+      return Right(user);
+    } on ServerException catch (e) {
+      return Left(ServerException(errModel: e.errModel));
+    }
+  }
+
+  Future<Either<ServerException, void>> logout(
+      {required String refreshToken}) async {
+    try {
+      await apiConsumer
+          .post(EndPoint.logout, data: {ApiKey.refreshToken: refreshToken});
+      await CacheHelper.removeData(key: ApiKey.accessToken);
+      await CacheHelper.removeData(key: ApiKey.refreshToken);
+      await CacheHelper.removeData(key: ApiKey.id);
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerException(errModel: e.errModel));
+    }
+  }
+
+  Future<Either<ServerException, ProfileEntity>> getProfile() async {
+    try {
+      final responce = await apiConsumer.get(EndPoint.getProfile);
+      final user = ProfileModel.fromJson(responce);
       return Right(user);
     } on ServerException catch (e) {
       return Left(ServerException(errModel: e.errModel));

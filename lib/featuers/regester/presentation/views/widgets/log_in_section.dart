@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_app/constant.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 import 'package:to_do_app/featuers/home/presentation/views/home_view.dart';
-import 'package:to_do_app/featuers/regester/presentation/mange/cubit/log_in_cubit.dart';
+import 'package:to_do_app/featuers/regester/presentation/mange/cubit/log_in_cubit/log_in_cubit.dart';
 import 'package:to_do_app/featuers/regester/presentation/views/sign_up_view.dart';
 import 'package:to_do_app/featuers/regester/presentation/views/widgets/password_text_field.dart';
 import 'package:to_do_app/featuers/regester/presentation/views/widgets/phone_text_field.dart';

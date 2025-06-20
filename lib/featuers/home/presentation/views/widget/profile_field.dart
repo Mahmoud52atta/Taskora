@@ -7,6 +7,7 @@ class ProfileField extends StatelessWidget {
   final Widget? trailing;
 
   const ProfileField({
+    super.key,
     required this.label,
     required this.value,
     this.trailing,

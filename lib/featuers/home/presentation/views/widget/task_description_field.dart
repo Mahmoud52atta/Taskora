@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 
 class TaskDescriptionField extends StatelessWidget {
-  const TaskDescriptionField({super.key});
+  const TaskDescriptionField({super.key, this.onChanged});
+  final Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class TaskDescriptionField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          onChanged: onChanged,
           maxLines: 4,
           decoration: InputDecoration(
             hintText: 'Enter description here...',

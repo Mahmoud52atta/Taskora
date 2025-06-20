@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/core/helper_function/const_space.dart';
 import 'package:to_do_app/core/utils/app_images.dart';
 import 'package:to_do_app/featuers/home/presentation/views/add_new_task_view.dart';
-import 'package:to_do_app/featuers/home/presentation/views/profile_view.dart';
-import 'package:to_do_app/featuers/home/presentation/views/task_details_view.dart';
+import 'package:to_do_app/featuers/home/presentation/views/widget/home_task_list_view_bloc.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/home_view_appBar.dart';
-import 'package:to_do_app/featuers/home/presentation/views/widget/item_task.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/filtering_all_tasks_status.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 
@@ -18,38 +16,31 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController _mainScrollController = ScrollController();
+  final ScrollController _taskListScrollController = ScrollController();
   bool _showFAB = false;
-
+  // late final HomeEntity homeEntity;
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 300) {
-        if (!_showFAB) setState(() => _showFAB = true);
-      } else {
-        if (_showFAB) setState(() => _showFAB = false);
-      }
-    });
+    showFlaotingActionBottonMethod();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _mainScrollController.dispose();
+    _taskListScrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final horizontalPadding = MediaQuery.sizeOf(context).width * 0.05;
-
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: ConstSpace.horizontalPadding(context)),
         child: CustomScrollView(
-          controller: _scrollController,
+          controller: _mainScrollController,
           slivers: [
             const SliverToBoxAdapter(child: SizedBox(height: 36)),
             const SliverToBoxAdapter(child: HomeViewAppBar()),
@@ -66,19 +57,10 @@ class _HomeViewState extends State<HomeView> {
             const SliverToBoxAdapter(
                 child: SizedBox(height: 37, child: FilteringAllTasksStatus())),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, TaskDetailsView.routeName);
-                    },
-                    child: const ItemTask(),
-                  ),
-                ),
-                childCount: 10,
-              ),
+
+            SliverToBoxAdapter(
+              child: HomeTaskListViewBloc(
+                  scrollController: _taskListScrollController),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 100)), // space
           ],
@@ -108,5 +90,16 @@ class _HomeViewState extends State<HomeView> {
             )
           : null,
     );
+  }
+
+  void showFlaotingActionBottonMethod() {
+    _mainScrollController.addListener(() {
+      if (_mainScrollController.position.pixels >=
+          _mainScrollController.position.maxScrollExtent - 300) {
+        if (!_showFAB) setState(() => _showFAB = true);
+      } else {
+        if (_showFAB) setState(() => _showFAB = false);
+      }
+    });
   }
 }

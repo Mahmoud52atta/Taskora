@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:to_do_app/core/errors/service_errore.dart';
 import 'package:to_do_app/featuers/regester/domain/entities/login_entity.dart';
 import 'package:to_do_app/featuers/regester/domain/entities/sign_up_entity.dart';
+import 'package:to_do_app/featuers/regester/domain/entities/profile_entity.dart';
 
 abstract class AuthRepo {
   Future<Either<ServerException, LoginEntity>> login(
@@ -14,6 +15,9 @@ abstract class AuthRepo {
     required String address,
     required String password,
   });
-
+  Future<Either<ServerException, void>> logout({required String refreshToken});
+  Future<Either<ServerException, void>> getRefreshToken(
+      {required String accessToken});
+  Future<Either<ServerException, ProfileEntity>> getProfile();
   //<>>
 }

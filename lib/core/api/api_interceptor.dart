@@ -1,22 +1,67 @@
 import 'package:dio/dio.dart';
-import 'package:to_do_app/core/api/end_point.dart';
 import 'package:to_do_app/core/cash/cash_helper.dart';
+import 'package:to_do_app/featuers/regester/data/data_source/refresh_token_data_source.dart';
 
 class ApiInterceptor extends Interceptor {
+  final RefreshTokenDataSource refreshTokenDataSource;
+  final Dio dio;
+
+  ApiInterceptor({
+    required this.refreshTokenDataSource,
+    required this.dio,
+  });
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    String? userId = CacheHelper.getDataString(key: ApiKey.id);
-    String? refreshToken = CacheHelper.getDataString(key: ApiKey.refreshToken);
-    String? accessToken = CacheHelper.getDataString(key: ApiKey.accessToken);
-
-    if (refreshToken.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $refreshToken';
+    final accessToken = CacheHelper.getDataString(key: 'access_token');
+    if (accessToken.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
     }
-
-    if (userId.isNotEmpty) {
-      options.headers[ApiKey.id] = userId;
-    }
-
     super.onRequest(options, handler);
+    CacheHelper.getDataString(key: '_id');
+  }
+
+  @override
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
+    if (err.response?.statusCode == 401) {
+      try {
+        // Try to refresh the token
+        final result = await refreshTokenDataSource.refreshToken();
+
+        return result.fold(
+          (failure) async {
+            // If refresh fails, clear tokens and proceed with error
+            await CacheHelper.removeData(key: 'access_token');
+            await CacheHelper.removeData(key: 'refresh_token');
+            return handler.reject(err);
+          },
+          (success) async {
+            // If refresh succeeds, retry the original request
+            final newAccessToken =
+                CacheHelper.getDataString(key: 'access_token');
+            if (newAccessToken.isNotEmpty) {
+              err.requestOptions.headers['Authorization'] =
+                  'Bearer $newAccessToken';
+              try {
+                // Retry the request
+                final response = await dio.fetch(err.requestOptions);
+                return handler.resolve(response);
+              } catch (e) {
+                return handler.reject(err);
+              }
+            }
+            return handler.reject(err);
+          },
+        );
+      } catch (e) {
+        // If any error occurs during refresh, clear tokens and proceed with error
+        await CacheHelper.removeData(key: 'access_token');
+        await CacheHelper.removeData(key: 'refresh_token');
+        return handler.reject(err);
+      }
+    } else {
+      return handler.reject(err);
+    }
   }
 }

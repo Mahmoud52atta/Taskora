@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:to_do_app/core/errors/service_errore.dart';
 import 'package:to_do_app/featuers/regester/data/data_source/auth_remote_data_source.dart';
 import 'package:to_do_app/featuers/regester/domain/entities/login_entity.dart';
+import 'package:to_do_app/featuers/regester/domain/entities/profile_entity.dart';
 import 'package:to_do_app/featuers/regester/domain/entities/sign_up_entity.dart';
 import 'package:to_do_app/featuers/regester/domain/repos/auth_repo.dart';
 
@@ -30,5 +31,22 @@ class AuthRepoImp extends AuthRepo {
         experienceLevel: experienceLevel,
         address: address,
         password: password);
+  }
+
+  @override
+  Future<Either<ServerException, ProfileEntity>> getProfile() async {
+    return await authRemoteDataSource.getProfile();
+  }
+
+  @override
+  Future<Either<ServerException, void>> getRefreshToken(
+      {required String accessToken}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<ServerException, void>> logout(
+      {required String refreshToken}) async {
+    return await authRemoteDataSource.logout(refreshToken: refreshToken);
   }
 }
