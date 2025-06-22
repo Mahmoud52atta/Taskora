@@ -6,6 +6,7 @@ import 'package:to_do_app/core/helper_function/generate_goRout.dart';
 import 'package:to_do_app/core/helper_function/get_it.dart';
 import 'package:to_do_app/featuers/home/data/repos_impl/home_repo_impl.dart';
 import 'package:to_do_app/featuers/home/presentation/manage/add_task_cubit/cubit/new_task_cubit.dart';
+import 'package:to_do_app/featuers/home/presentation/manage/delete_cubit/cubit/delete_cubit.dart';
 import 'package:to_do_app/featuers/home/presentation/manage/edit_cubit/cubit/edit_cubit.dart';
 import 'package:to_do_app/featuers/home/presentation/manage/home_cubit/home_cubit.dart';
 import 'package:to_do_app/featuers/regester/data/repo/auth_repo_imp.dart';
@@ -39,8 +40,8 @@ class RebuildToDoApp extends StatelessWidget {
         BlocProvider(create: (context) => LogOutCubit(getIt<AuthRepoImp>())),
         BlocProvider(create: (context) => ProfileCubit(getIt<AuthRepoImp>())),
         BlocProvider(create: (context) => NewTaskCubit(getIt<HomeRepoImpl>())),
-        BlocProvider(
-            create: (context) => EditCubit(homeRepo: getIt<HomeRepoImpl>())),
+        BlocProvider(create: (context) => EditCubit(getIt<HomeRepoImpl>())),
+        BlocProvider(create: (context) => DeleteCubit(getIt<HomeRepoImpl>())),
       ],
       child: MaterialApp(
           locale: DevicePreview.locale(context),

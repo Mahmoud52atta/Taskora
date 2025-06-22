@@ -2,7 +2,6 @@ import 'package:to_do_app/featuers/home/domain/entities/add_task_entity.dart';
 
 class AddTaskModel extends AddTaskEntity {
   final String? id;
-  final String? status;
   final String? userId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -13,9 +12,9 @@ class AddTaskModel extends AddTaskEntity {
     required super.title,
     required super.description,
     required super.priority,
+    required super.status,
     required super.diuDate,
     this.id,
-    this.status,
     this.userId,
     this.createdAt,
     this.updatedAt,
@@ -27,9 +26,9 @@ class AddTaskModel extends AddTaskEntity {
         title: json['title'] as String? ?? '',
         description: json['desc'] as String? ?? '',
         priority: json['priority'] as String? ?? '',
+        status: json['status'] as String? ?? 'Waiting',
         diuDate: json['diuDate'] as String? ?? '',
         id: json['_id'] as String?,
-        status: json['status'] as String?,
         userId: json['user'] as String?,
         createdAt: json['createdAt'] == null
             ? null
@@ -45,9 +44,9 @@ class AddTaskModel extends AddTaskEntity {
         'title': title,
         'desc': description,
         'priority': priority,
+        'status': status,
         'diuDate': diuDate,
         '_id': id,
-        'status': status,
         'user': userId,
         'createdAt': createdAt?.toIso8601String(),
         'updatedAt': updatedAt?.toIso8601String(),

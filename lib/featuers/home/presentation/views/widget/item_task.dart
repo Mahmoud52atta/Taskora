@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_app/constant.dart';
 import 'package:to_do_app/core/utils/app_images.dart';
 import 'package:to_do_app/core/utils/font_styles.dart';
 import 'package:to_do_app/featuers/home/domain/entities/hoem_entity.dart';
 import 'package:intl/intl.dart';
+import 'package:to_do_app/featuers/home/presentation/manage/delete_cubit/cubit/delete_cubit.dart';
 import 'package:to_do_app/featuers/home/presentation/views/task_details_view.dart';
+
+import 'package:to_do_app/featuers/home/presentation/views/widget/build_task_image.dart';
 
 class ItemTask extends StatelessWidget {
   const ItemTask({super.key, required this.homeEntity});
@@ -17,6 +22,104 @@ class ItemTask extends StatelessWidget {
       return dateStr; // fallback if parsing fails
     }
   }
+
+  // Helper method to get status color
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'inprogress':
+        return kPrimaryColor;
+      case 'waiting':
+        return const Color(0xffFF7D53);
+      case 'finished':
+        return const Color(0xff0087FF);
+      default:
+        return const Color(0xffFF7D53); // fallback color
+    }
+  }
+
+  // Helper method to get status display text
+  String _getStatusDisplayText(String status) {
+    switch (status.toLowerCase()) {
+      case 'inprogress':
+        return 'InProgress';
+      case 'waiting':
+        return 'Waiting';
+      case 'finished':
+        return 'Finished';
+      default:
+        return status; // fallback to original value
+    }
+  }
+
+  // Helper method to get status background color
+  Color _getStatusBackgroundColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'inprogress':
+        return kSecondColor;
+      case 'waiting':
+        return const Color(0xffFFE4F2);
+      case 'finished':
+        return const Color(0xffE3F2FF);
+      default:
+        return const Color(0xffFFE4F2); // fallback color
+    }
+  }
+
+  // Helper method to get priority color
+  Color _getPriorityColor(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return const Color(0xffFF7D53);
+      case 'medium':
+        return kPrimaryColor;
+      case 'low':
+        return const Color(0xff0087FF);
+      default:
+        return const Color(0xff5F33E1); // fallback color
+    }
+  }
+
+  // Helper method to get priority display text
+  String _getPriorityDisplayText(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return 'High';
+      case 'medium':
+        return 'Medium';
+      case 'low':
+        return 'Low';
+      default:
+        return priority; // fallback to original value
+    }
+  }
+
+  // // Helper method to get priority icon
+  // IconData _getPriorityIcon(String priority) {
+  //   switch (priority.toLowerCase()) {
+  //     case 'high':
+  //       return Icons.priority_high;
+  //     case 'medium':
+  //       return Icons.remove;
+  //     case 'low':
+  //       return Icons.keyboard_arrow_down;
+  //     default:
+  //       return Icons.flag;
+  //   }
+  // }
+
+  // Helper method to get status icon
+  // IconData _getStatusIcon(String status) {
+  //   switch (status.toLowerCase()) {
+  //     case 'inprogress':
+  //       return Icons.play_circle_outline;
+  //     case 'waiting':
+  //       return Icons.schedule;
+  //     case 'finished':
+  //       return Icons.check_circle_outline;
+  //     default:
+  //       return Icons.circle_outlined;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +136,7 @@ class ItemTask extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Image.asset(
-                Assets.imagesImage2,
-                scale: 3.5,
-              ),
+              child: BuildTaskImage(homeEntity: homeEntity),
             ),
             const SizedBox(
               width: 12,
@@ -49,7 +149,7 @@ class ItemTask extends StatelessWidget {
                   Row(
                     children: [
                       SizedBox(
-                        width: MediaQuery.sizeOf(context).width * 0.40,
+                        width: MediaQuery.sizeOf(context).width * 0.37,
                         child: Text(
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -61,22 +161,22 @@ class ItemTask extends StatelessWidget {
                         fit: FlexFit.tight,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 6),
+                              horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
-                              color: const Color(0xffFFE4F2),
+                              color:
+                                  _getStatusBackgroundColor(homeEntity.status),
                               borderRadius: BorderRadius.circular(8)),
                           child: Center(
                             child: Text(
-                              homeEntity.status,
+                              _getStatusDisplayText(homeEntity.status),
                               style: FontStyles.fontStyleMedium12(context)
-                                  .copyWith(color: const Color(0xffFF7D53)),
+                                  .copyWith(
+                                      color:
+                                          _getStatusColor(homeEntity.status)),
                             ),
                           ),
                         ),
                       ),
-                      // SizedBox(
-                      //   width: MediaQuery.sizeOf(context).width * 0.00001,
-                      // ),
                       PopupMenuButton<String>(
                         icon: Image.asset(
                           Assets.imagesFrame5,
@@ -103,7 +203,9 @@ class ItemTask extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      // TODO: Implement delete functionality
+                                      context
+                                          .read<DeleteCubit>()
+                                          .deleteTask(id: homeEntity.id);
                                       Navigator.pop(context);
                                     },
                                     child: const Text(
@@ -145,20 +247,25 @@ class ItemTask extends StatelessWidget {
                           width: MediaQuery.sizeOf(context).width * 0.42,
                           child: Row(
                             children: [
-                              Image.asset(
-                                Assets.imagesFlage,
-                                scale: 5.5,
+                              ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                  _getPriorityColor(homeEntity.priority),
+                                  BlendMode.srcIn,
+                                ),
+                                child: Image.asset(
+                                  Assets.imagesFlage,
+                                  scale: 5.5,
+                                ),
                               ),
                               const SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                homeEntity.priority,
+                                _getPriorityDisplayText(homeEntity.priority),
                                 style: FontStyles.fontStyleMedium12(context)
                                     .copyWith(
-                                        color: const Color(
-                                          0xff5F33E1,
-                                        ),
+                                        color: _getPriorityColor(
+                                            homeEntity.priority),
                                         fontWeight: FontWeight.bold),
                               ),
                             ],

@@ -15,13 +15,13 @@ class EditeModel extends EditEntity {
 
   factory EditeModel.fromJson(Map<String, dynamic> json) {
     return EditeModel(
-      id: json['_id'] as String,
-      image: json['image'] as String,
-      title: json['title'] as String,
-      description: json['desc'] as String,
-      dueDate: json['diuDate'] as String,
-      status: json['status'] as String,
-      priority: json['priority'] as String,
+      id: json['_id'] as String? ?? '',
+      image: json['image'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      description: json['desc'] as String? ?? '',
+      dueDate: json['diuDate'] as String? ?? '',
+      status: json['status'] as String? ?? '',
+      priority: json['priority'] as String? ?? '',
     );
   }
 

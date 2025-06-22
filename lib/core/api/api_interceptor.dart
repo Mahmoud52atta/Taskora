@@ -24,7 +24,13 @@ class ApiInterceptor extends Interceptor {
   @override
   Future<void> onError(
       DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401) {
+    // Don't attempt token refresh for authentication endpoints
+    final isAuthEndpoint = err.requestOptions.path.contains('auth/login') ||
+        err.requestOptions.path.contains('auth/register') ||
+        err.requestOptions.path.contains('auth/signin') ||
+        err.requestOptions.path.contains('auth/signup');
+
+    if (err.response?.statusCode == 401 && !isAuthEndpoint) {
       try {
         // Try to refresh the token
         final result = await refreshTokenDataSource.refreshToken();

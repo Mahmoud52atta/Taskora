@@ -33,8 +33,7 @@ class HomeRepoImpl extends HomeRepo {
 
   @override
   Future<Either<ServerException, void>> deleteTask({required String id}) {
-    // TODO: implement deleteTask
-    throw UnimplementedError();
+    return homeRemoteDataSource.deleteTask(id: id);
   }
 
   @override
@@ -45,14 +44,16 @@ class HomeRepoImpl extends HomeRepo {
 
   @override
   Future<Either<ServerException, List<EditEntity>>> editTask({
+    required String id,
     required String image,
     required String title,
     required String description,
-    required String status,
+    String? status,
     required String priority,
     required String diuDate,
   }) {
     return homeRemoteDataSource.editTask(
+      id: id,
       image: image,
       title: title,
       description: description,

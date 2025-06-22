@@ -20,27 +20,45 @@ class _PeriorityFieldState extends State<PeriorityField> {
   @override
   void initState() {
     super.initState();
-    _selectedPriority = widget.homeInitial?.priority;
+    final defaultPriority =
+        widget.homeInitial?.priority?.toLowerCase() ?? 'medium';
+    _selectedPriority = defaultPriority;
+  }
+
+  Color _getPriorityColor(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return Colors.red;
+      case 'medium':
+        return Colors.orange;
+      case 'low':
+        return Colors.green;
+      default:
+        return kPrimaryColor;
+    }
+  }
+
+  IconData _getPriorityIcon(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return Icons.priority_high;
+      case 'medium':
+        return Icons.remove;
+      case 'low':
+        return Icons.keyboard_arrow_down;
+      default:
+        return Icons.flag;
+    }
+  }
+
+  String _capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Create a list of standard priority values
-    final standardPriorities = [
-      'high',
-      'medium',
-      'low',
-      'High',
-      'Medium',
-      'Low'
-    ];
-
-    // Ensure the current priority is included in the items list
-    final allPriorities = <String>[];
-    allPriorities.addAll(standardPriorities);
-    if (!allPriorities.contains(_selectedPriority)) {
-      allPriorities.add(_selectedPriority ?? '');
-    }
+    final priorities = ['high', 'medium', 'low'];
 
     return DropdownButtonFormField<String>(
       iconSize: 30,
@@ -48,21 +66,44 @@ class _PeriorityFieldState extends State<PeriorityField> {
       borderRadius: BorderRadius.circular(16),
       style: FontStyles.fontStyleBold16(context).copyWith(color: kPrimaryColor),
       decoration: InputDecoration(
-          filled: true,
-          fillColor: kSecondColor,
-          prefixIcon: Image.asset(
-            scale: 4.5,
-            Assets.imagesFlage,
-          ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16))),
+        filled: true,
+        fillColor: kSecondColor,
+        labelText: 'Priority',
+        labelStyle: FontStyles.fontStyleRegular14(context).copyWith(
+          color: Colors.grey[600],
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+      ),
       value: _selectedPriority,
-      items: allPriorities
-          .map((priority) => DropdownMenuItem(
-                value: priority,
-                child: Text(priority.isNotEmpty ? priority : 'Unknown'),
-              ))
-          .toList(),
-      onChanged: null, // Make it read-only for display
+      items: priorities.map((priority) {
+        return DropdownMenuItem<String>(
+          value: priority,
+          child: Text(
+            _capitalizeFirstLetter(priority),
+            style: FontStyles.fontStyleRegular14(context).copyWith(
+              color: _getPriorityColor(priority),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          _selectedPriority = value;
+        });
+        widget.onChanged?.call(value);
+      },
     );
   }
 }

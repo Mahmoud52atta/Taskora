@@ -8,8 +8,11 @@ import 'package:to_do_app/featuers/home/presentation/manage/edit_cubit/cubit/edi
 import 'package:to_do_app/featuers/home/presentation/manage/home_cubit/home_cubit.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/date_time_field.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/image_field.dart';
-import 'package:to_do_app/featuers/home/presentation/views/widget/periority_field.dart';
-import 'package:to_do_app/featuers/home/presentation/views/widget/status_field.dart';
+import 'package:to_do_app/featuers/home/presentation/views/widget/task_details_widgets/task_details_image_section.dart';
+import 'package:to_do_app/featuers/home/presentation/views/widget/task_details_widgets/task_details_priority_dropdown.dart';
+import 'package:to_do_app/featuers/home/presentation/views/widget/task_details_widgets/task_details_save_button.dart';
+import 'package:to_do_app/featuers/home/presentation/views/widget/task_details_widgets/task_details_status_dropdown.dart';
+import 'package:to_do_app/featuers/home/presentation/views/widget/task_details_widgets/task_details_text_field.dart';
 import 'dart:io';
 
 class TaskDetailsBody extends StatefulWidget {
@@ -40,6 +43,18 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
   @override
   void initState() {
     super.initState();
+    _initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant TaskDetailsBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.details != oldWidget.details) {
+      _initState();
+    }
+  }
+
+  void _initState() {
     _selectedStatus = widget.details.status;
     _selectedPriority = widget.details.priority;
     _title = widget.details.title;
@@ -48,126 +63,118 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
     _selectedImagePath = widget.details.image;
   }
 
+  void _saveChanges() {
+    if (_selectedImagePath == null || _selectedImagePath!.isEmpty) {
+      _showSnackBar('Please select an image');
+      return;
+    }
+    if (_title == null || _title!.isEmpty) {
+      _showSnackBar('Please enter a title');
+      return;
+    }
+    if (_description == null || _description!.isEmpty) {
+      _showSnackBar('Please enter a description');
+      return;
+    }
+    if (_dateTime == null || _dateTime!.isEmpty) {
+      _showSnackBar('Please select a date');
+      return;
+    }
+
+    context.read<EditCubit>().editTask(
+          id: widget.details.id,
+          image: _selectedImagePath!,
+          title: _title!,
+          description: _description!,
+          priority: _selectedPriority!,
+          status: _selectedStatus!,
+          diuDate: _dateTime!,
+        );
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EditCubit, EditState>(
+    return BlocListener<EditCubit, EditState>(
       listener: (context, state) {
         if (state is EditSuccess) {
-          // Show success message first
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Task updated successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-
-          // Exit edit mode but stay on task details view
+          _showSnackBar('Task updated successfully!');
           widget.onEditToggle();
 
-          // Create updated task details with new values
           final updatedDetails = HomeEntity(
-            image: _selectedImagePath ?? widget.details.image,
-            title: _title ?? widget.details.title,
-            description: _description ?? widget.details.description,
-            status: _selectedStatus ?? widget.details.status,
-            priority: _selectedPriority ?? widget.details.priority,
-            date: _dateTime ?? widget.details.date,
+            id: widget.details.id,
+            image: _selectedImagePath!,
+            title: _title!,
+            description: _description!,
+            status: _selectedStatus!,
+            priority: _selectedPriority!,
+            date: _dateTime!,
           );
-
-          // Update the task details in parent widget
           widget.onTaskUpdated(updatedDetails);
 
-          // Immediately refresh home data
           context.read<HomeCubit>().getHomeData();
-
-          // Also refresh after a delay to ensure server has processed the update
-          Future.delayed(const Duration(seconds: 1), () {
-            if (context.mounted) {
-              context.read<HomeCubit>().getHomeData();
-            }
-          });
         } else if (state is EditFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          _showSnackBar(state.message);
         }
       },
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Image',
-              style: FontStyles.fontStyleRegular14(context),
-            ),
-            const SizedBox(height: 8),
-            widget.isEditing
-                ? ImageField(
-                    onChanged: (imagePath) {
-                      setState(() {
-                        _selectedImagePath = imagePath;
-                      });
-                    },
-                  )
-                : _buildImageWidget(widget.details.image),
-            const SizedBox(height: 30),
-            Text(
-              'Title',
-              style: FontStyles.fontStyleRegular14(context),
-            ),
-            const SizedBox(height: 8),
-            widget.isEditing
-                ? _buildTitleField()
-                : Text(
-                    widget.details.title,
-                    style: FontStyles.fontStyleBold24(context),
-                  ),
-            const SizedBox(height: 8),
-            Text(
-              'Description',
-              style: FontStyles.fontStyleRegular14(context),
-            ),
-            const SizedBox(height: 8),
-            widget.isEditing
-                ? _buildDescriptionField()
-                : Text(
-                    widget.details.description,
-                    style: FontStyles.fontStyleRegular14(context),
-                  ),
-            const SizedBox(height: 16),
-            Text(
-              'Date',
-              style: FontStyles.fontStyleRegular14(context),
-            ),
-            const SizedBox(height: 8),
-            widget.isEditing
-                ? _buildDateField()
-                : DateTimeField(
-                    child: Text(widget.details.date),
-                  ),
-            const SizedBox(height: 8),
-            Text(
-              'Status',
-              style: FontStyles.fontStyleRegular14(context),
-            ),
-            const SizedBox(height: 8),
-            _buildStatusDropdown(),
-            const SizedBox(height: 8),
-            Text(
-              'Priority',
-              style: FontStyles.fontStyleRegular14(context),
-            ),
-            const SizedBox(height: 8),
-            _buildPriorityDropdown(),
-            const SizedBox(height: 16),
-            if (widget.isEditing) _buildSaveButton(state),
-            const SizedBox(height: 10),
-            Center(
-              child: Image.asset(Assets.imagesQRCode),
-            )
-          ],
-        );
-      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Image', style: FontStyles.fontStyleRegular14(context)),
+          const SizedBox(height: 8),
+          TaskDetailsImageSection(
+            isEditing: widget.isEditing,
+            imagePath: _selectedImagePath,
+            onChanged: (path) => setState(() => _selectedImagePath = path),
+          ),
+          const SizedBox(height: 30),
+          TaskDetailsTextField(
+            label: 'Title',
+            isEditing: widget.isEditing,
+            value: _title ?? '',
+            onChanged: (value) => _title = value,
+            displayStyle: FontStyles.fontStyleBold24(context),
+          ),
+          TaskDetailsTextField(
+            label: 'Description',
+            isEditing: widget.isEditing,
+            value: _description ?? '',
+            onChanged: (value) => _description = value,
+            displayStyle: FontStyles.fontStyleRegular14(context),
+            maxLines: 4,
+          ),
+          Text('Date', style: FontStyles.fontStyleRegular14(context)),
+          const SizedBox(height: 8),
+          DateTimeField(
+            onChanged: (value) => setState(() => _dateTime = value),
+            child: Text(_dateTime ?? ''),
+          ),
+          const SizedBox(height: 16),
+          Text('Status', style: FontStyles.fontStyleRegular14(context)),
+          const SizedBox(height: 8),
+          TaskDetailsStatusDropdown(
+            isEditing: widget.isEditing,
+            selectedValue: _selectedStatus,
+            onChanged: (value) => setState(() => _selectedStatus = value),
+          ),
+          const SizedBox(height: 16),
+          Text('Priority', style: FontStyles.fontStyleRegular14(context)),
+          const SizedBox(height: 8),
+          TaskDetailsPriorityDropdown(
+            isEditing: widget.isEditing,
+            selectedValue: _selectedPriority,
+            onChanged: (value) => setState(() => _selectedPriority = value),
+          ),
+          const SizedBox(height: 16),
+          if (widget.isEditing) TaskDetailsSaveButton(onPressed: _saveChanges),
+          const SizedBox(height: 10),
+          Center(child: Image.asset(Assets.imagesQRCode)),
+        ],
+      ),
     );
   }
 
@@ -200,15 +207,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
   }
 
   Widget _buildStatusDropdown() {
-    final standardStatuses = [
-      'Inprogress',
-      'Completed',
-      'Pending',
-      'waiting',
-      'inprogress',
-      'completed',
-      'pending'
-    ];
+    final standardStatuses = ['waiting', 'inprogress', 'finished'];
     final allStatuses = <String>[];
     allStatuses.addAll(standardStatuses);
     if (!allStatuses.contains(_selectedStatus)) {
@@ -229,7 +228,9 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
       items: allStatuses
           .map((status) => DropdownMenuItem(
                 value: status,
-                child: Text(status.isNotEmpty ? status : 'Unknown'),
+                child: Text(status.isNotEmpty
+                    ? _getStatusDisplayText(status)
+                    : 'Unknown'),
               ))
           .toList(),
       onChanged: widget.isEditing
@@ -243,14 +244,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
   }
 
   Widget _buildPriorityDropdown() {
-    final standardPriorities = [
-      'high',
-      'medium',
-      'low',
-      'High',
-      'Medium',
-      'Low'
-    ];
+    final standardPriorities = ['high', 'medium', 'low'];
     final allPriorities = <String>[];
     allPriorities.addAll(standardPriorities);
     if (!allPriorities.contains(_selectedPriority)) {
@@ -275,7 +269,9 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
       items: allPriorities
           .map((priority) => DropdownMenuItem(
                 value: priority,
-                child: Text(priority.isNotEmpty ? priority : 'Unknown'),
+                child: Text(priority.isNotEmpty
+                    ? _getPriorityDisplayText(priority)
+                    : 'Unknown'),
               ))
           .toList(),
       onChanged: widget.isEditing
@@ -293,10 +289,10 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
       width: double.infinity,
       child: ElevatedButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           ),
-          backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+          backgroundColor: WidgetStateProperty.all(kPrimaryColor),
         ),
         onPressed: state is EditLoading
             ? null
@@ -331,6 +327,7 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
                 }
 
                 context.read<EditCubit>().editTask(
+                      id: widget.details.id,
                       image: _selectedImagePath ?? widget.details.image,
                       title: _title ?? widget.details.title,
                       description: _description ?? widget.details.description,
@@ -407,5 +404,31 @@ class _TaskDetailsBodyState extends State<TaskDetailsBody> {
       },
       child: Text(_dateTime ?? widget.details.date),
     );
+  }
+
+  String _getStatusDisplayText(String status) {
+    switch (status) {
+      case 'waiting':
+        return 'Waiting';
+      case 'inprogress':
+        return 'In Progress';
+      case 'finished':
+        return 'Finished';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  String _getPriorityDisplayText(String priority) {
+    switch (priority) {
+      case 'high':
+        return 'High';
+      case 'medium':
+        return 'Medium';
+      case 'low':
+        return 'Low';
+      default:
+        return 'Unknown';
+    }
   }
 }

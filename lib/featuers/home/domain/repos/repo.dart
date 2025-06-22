@@ -16,11 +16,12 @@ abstract class HomeRepo {
   });
   Future<Either<ServerException, void>> deleteTask({required String id});
   Future<Either<ServerException, List<EditEntity>>> editTask({
+    required String id,
     required String image,
     required String title,
     required String description,
-    required String diuDate,
-    required String status,
+    String? status,
     required String priority,
+    required String diuDate,
   });
 }

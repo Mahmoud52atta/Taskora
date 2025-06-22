@@ -24,9 +24,9 @@ class SectionDropDown extends StatelessWidget {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
         items: [
           'fresh',
-          'Junior',
+          'junior',
           'midLevel',
-          'Senior',
+          'senior',
         ]
             .map((level) => DropdownMenuItem(value: level, child: Text(level)))
             .toList(),

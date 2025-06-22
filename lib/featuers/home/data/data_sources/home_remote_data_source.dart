@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:to_do_app/core/api/api_consumer.dart';
 import 'package:to_do_app/core/api/end_point.dart';
 import 'package:to_do_app/core/cash/cash_helper.dart';
+import 'package:to_do_app/core/errors/error_model.dart';
 import 'package:to_do_app/core/errors/service_errore.dart';
 import 'package:to_do_app/featuers/home/data/models/add_task_model.dart';
 import 'package:to_do_app/featuers/home/data/models/edite_model.dart';
@@ -48,7 +49,7 @@ class HomeRemoteDataSource {
         },
       );
 
-      List<AddTaskEntity> todos;
+      List<AddTaskModel> todos;
       if (response is List) {
         todos = response.map((item) => AddTaskModel.fromJson(item)).toList();
       } else if (response is Map<String, dynamic>) {
@@ -56,7 +57,8 @@ class HomeRemoteDataSource {
       } else {
         todos = [];
       }
-
+      await CacheHelper.saveData(
+          key: ApiKey.id, value: todos.map((e) => e.id).toList());
       return Right(todos);
     } on ServerException catch (e) {
       return Left(ServerException(errModel: e.errModel));
@@ -64,11 +66,12 @@ class HomeRemoteDataSource {
   }
 
   Future<Either<ServerException, List<EditEntity>>> editTask({
+    required String id,
     required String image,
     required String title,
     required String description,
     required String priority,
-    required String status,
+    String? status,
     required String diuDate,
   }) async {
     try {
@@ -79,7 +82,7 @@ class HomeRemoteDataSource {
           'title': title,
           'desc': description,
           'priority': priority,
-          'status': status,
+          'status': status ?? 'waiting',
           'dueDate': diuDate,
         },
       );
@@ -97,6 +100,25 @@ class HomeRemoteDataSource {
       return Right(todos);
     } on ServerException catch (e) {
       return Left(ServerException(errModel: e.errModel));
+    }
+  }
+
+  Future<Either<ServerException, void>> deleteTask({required String id}) async {
+    try {
+      print('Deleting task with ID: $id');
+      print('Delete URL: ${EndPoint.deleteTask}$id');
+
+      await apiConsumer.delete('${EndPoint.deleteTask}$id');
+
+      print('Task deleted successfully');
+      return Right(null);
+    } on ServerException catch (e) {
+      print('Delete task failed: ${e.errModel.errorMessage}');
+      return Left(ServerException(errModel: e.errModel));
+    } catch (e) {
+      print('Unexpected error during delete: $e');
+      return Left(
+          ServerException(errModel: ErrorModel(errorMessage: e.toString())));
     }
   }
 }

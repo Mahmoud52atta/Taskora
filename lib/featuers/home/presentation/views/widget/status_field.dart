@@ -4,8 +4,17 @@ import 'package:to_do_app/core/utils/font_styles.dart';
 import 'package:to_do_app/featuers/home/domain/entities/hoem_entity.dart';
 
 class StatusField extends StatefulWidget {
-  const StatusField({super.key, required this.homeEntity});
-  final HomeEntity homeEntity;
+  const StatusField({
+    super.key,
+    this.onChanged,
+    this.homeEntity,
+    this.initialStatus,
+  });
+
+  final Function(String?)? onChanged;
+  final HomeEntity? homeEntity;
+  final String? initialStatus;
+
   @override
   State<StatusField> createState() => _StatusFieldState();
 }
@@ -16,50 +25,103 @@ class _StatusFieldState extends State<StatusField> {
   @override
   void initState() {
     super.initState();
-    _selectedStatus = widget.homeEntity.status;
+    final defaultStatus =
+        widget.initialStatus ?? widget.homeEntity?.status ?? 'waiting';
+    _selectedStatus = defaultStatus;
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'inprogress':
+        return Colors.blue;
+      case 'waiting':
+        return Colors.orange;
+      case 'finished':
+        return Colors.green;
+      default:
+        return kPrimaryColor;
+    }
+  }
+
+  IconData _getStatusIcon(String status) {
+    switch (status.toLowerCase()) {
+      case 'inprogress':
+        return Icons.play_circle_outline;
+      case 'waiting':
+        return Icons.schedule;
+      case 'finished':
+        return Icons.check_circle_outline;
+      default:
+        return Icons.circle_outlined;
+    }
+  }
+
+  String _capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Create a list of standard status values
-    final standardStatuses = [
-      'Inprogress',
-      'Completed',
-      'Pending',
-      'waiting',
-      'inprogress',
-      'completed',
-      'pending'
-    ];
-
-    // Ensure the current status is included in the items list
-    final allStatuses = <String>[];
-    allStatuses.addAll(standardStatuses);
-    if (!allStatuses.contains(_selectedStatus)) {
-      allStatuses.add(_selectedStatus ?? '');
-    }
+    final statuses = ['waiting', 'inprogress', 'finished'];
 
     return DropdownButtonFormField<String>(
-      iconSize: 30, iconEnabledColor: kPrimaryColor,
+      iconSize: 30,
+      iconEnabledColor: kPrimaryColor,
       style: FontStyles.fontStyleBold16(context).copyWith(color: kPrimaryColor),
       borderRadius: BorderRadius.circular(16),
       decoration: InputDecoration(
-        filled: true, fillColor: kSecondColor,
-        // focusColor: kPrimaryColor,
-        // fillColor: kSecondColor,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+        filled: true,
+        fillColor: kSecondColor,
+        labelText: 'Status',
+        labelStyle: FontStyles.fontStyleRegular14(context).copyWith(
+          color: Colors.grey[600],
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
       ),
-      // iconEnabledColor: kPrimaryColor,
-      // dropdownColor: kSecondColor,
-      // borderRadius: BorderRadius.circular(16),
       value: _selectedStatus,
-      items: allStatuses
-          .map((status) => DropdownMenuItem(
-                value: status,
-                child: Text(status.isNotEmpty ? status : 'Unknown'),
-              ))
-          .toList(),
-      onChanged: null, // Make it read-only for display
+      items: statuses.map((status) {
+        return DropdownMenuItem<String>(
+          value: status,
+          child: Text(
+            _getDisplayText(status),
+            style: FontStyles.fontStyleRegular14(context).copyWith(
+              color: _getStatusColor(status),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          _selectedStatus = value;
+        });
+        widget.onChanged?.call(value);
+      },
     );
+  }
+
+  String _getDisplayText(String status) {
+    switch (status.toLowerCase()) {
+      case 'inprogress':
+        return 'In Progress';
+      case 'waiting':
+        return 'Waiting';
+      case 'finished':
+        return 'Finished';
+      default:
+        return _capitalizeFirstLetter(status);
+    }
   }
 }

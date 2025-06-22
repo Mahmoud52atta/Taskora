@@ -1,62 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_app/featuers/home/presentation/manage/home_cubit/home_cubit.dart';
 import 'package:to_do_app/featuers/home/presentation/views/widget/all_tasks_status.dart';
 
-class FilteringAllTasksStatus extends StatefulWidget {
+class FilteringAllTasksStatus extends StatelessWidget {
   const FilteringAllTasksStatus({super.key});
 
   @override
-  State<FilteringAllTasksStatus> createState() =>
-      _FilteringAllTasksStatusState();
-}
-
-class _FilteringAllTasksStatusState extends State<FilteringAllTasksStatus> {
-  final List<String> status = ['All', 'Inprogress', 'Waiting', 'Finished'];
-  int selectedIndex = 0;
-  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-                onTap: () => updateIndex(0),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: AllTasksStatus(
-                      isSelected: selectedIndex == 0, text: status[0]),
-                )),
-            GestureDetector(
-                onTap: () => updateIndex(1),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: AllTasksStatus(
-                      isSelected: selectedIndex == 1, text: status[1]),
-                )),
-            GestureDetector(
-                onTap: () => updateIndex(2),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: AllTasksStatus(
-                      isSelected: selectedIndex == 2, text: status[2]),
-                )),
-            GestureDetector(
-                onTap: () => updateIndex(3),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: AllTasksStatus(
-                      isSelected: selectedIndex == 3, text: status[3]),
-                ))
-          ],
-        ),
-      ),
-    );
-  }
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        final List<String> statuses = [
+          'All',
+          'Waiting',
+          'Inprogress',
+          'Finished'
+        ];
+        final currentFilter = context.read<HomeCubit>().currentFilter;
 
-  void updateIndex(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+        return Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: statuses.map((status) {
+                final isSelected = currentFilter == status;
+                return GestureDetector(
+                  onTap: () => context.read<HomeCubit>().filterByStatus(status),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: AllTasksStatus(
+                      isSelected: isSelected,
+                      text: status,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

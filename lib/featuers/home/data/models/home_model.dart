@@ -1,24 +1,23 @@
 import 'package:to_do_app/featuers/home/domain/entities/hoem_entity.dart';
 
 class HomeModel extends HomeEntity {
-  final String id;
   final String user;
   final String createdAt;
   final String updatedAt;
   final int v;
 
   HomeModel({
-    required this.id,
+    required this.user,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.v,
+    required super.id,
     required super.image,
     required super.title,
     required super.description,
     required super.status,
     required super.priority,
     required super.date,
-    required this.user,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
   });
 
   factory HomeModel.fromJson(Map<String, dynamic> json) {

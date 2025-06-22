@@ -20,23 +20,30 @@ class SignUpModel extends SignupEntity {
     required super.password,
   });
 
-  factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
-        id: json[ApiKey.id] ?? '',
-        displayName: json[ApiKey.displyName] ?? '',
-        accessToken: json[ApiKey.accessToken] ?? '',
-        refreshToken: json[ApiKey.refreshToken] ?? '',
-        name: json[ApiKey.displyName] ?? '',
-        phoneNumber: json[ApiKey.phoneNumber] ?? '',
-        experienceYear: json[ApiKey.experinceYear] ?? '',
-        experienceLevel: json[ApiKey.expericneLevel] ?? '',
-        address: json[ApiKey.address] ?? '',
-        password: json[ApiKey.password] ?? '',
-      );
+  factory SignUpModel.fromJson(Map<String, dynamic> json) {
+    // Add null safety check
+    if (json == null) {
+      throw Exception('Response data is null');
+    }
+
+    return SignUpModel(
+      id: json[ApiKey.id]?.toString() ?? '',
+      displayName: json[ApiKey.displyName]?.toString() ?? '',
+      accessToken: json[ApiKey.accessToken]?.toString() ?? '',
+      refreshToken: json[ApiKey.refreshToken]?.toString() ?? '',
+      name: json[ApiKey.displyName]?.toString() ?? '',
+      phoneNumber: json[ApiKey.phoneNumber]?.toString() ?? '',
+      experienceYear: json[ApiKey.experinceYear]?.toString() ?? '',
+      experienceLevel: json[ApiKey.expericneLevel]?.toString() ?? '',
+      address: json[ApiKey.address]?.toString() ?? '',
+      password: json[ApiKey.password]?.toString() ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-        '_id': id,
-        'displayName': displayName,
-        'access_token': accessToken,
-        'refresh_token': refreshToken,
+        ApiKey.id: id,
+        ApiKey.displyName: displayName,
+        ApiKey.accessToken: accessToken,
+        ApiKey.refreshToken: refreshToken,
       };
 }

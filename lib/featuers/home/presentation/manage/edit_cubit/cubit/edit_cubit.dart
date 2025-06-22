@@ -8,17 +8,20 @@ part 'edit_state.dart';
 class EditCubit extends Cubit<EditState> {
   final HomeRepo homeRepo;
 
-  EditCubit({required this.homeRepo}) : super(EditInitial());
+  EditCubit(this.homeRepo) : super(EditInitial());
 
-  Future<void> editTask(
-      {required String image,
-      required String title,
-      required String description,
-      required String priority,
-      required String status,
-      required String diuDate}) async {
+  Future<void> editTask({
+    required String id,
+    required String image,
+    required String title,
+    required String description,
+    required String priority,
+    required String status,
+    required String diuDate,
+  }) async {
     emit(EditLoading());
     final result = await homeRepo.editTask(
+      id: id,
       image: image,
       title: title,
       description: description,

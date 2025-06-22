@@ -69,7 +69,6 @@ class _LoginSectionState extends State<LoginSection> {
                       },
                       onChanged: (value) {
                         phone = value.completeNumber;
-                        print(phone);
                       },
                     ),
                     const SizedBox(
@@ -126,7 +125,7 @@ class _LoginSectionState extends State<LoginSection> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Didn’t have any account?',
+                    'Didn\'t have any account?',
                     style: FontStyles.fontStyleRegular14(context),
                   ),
                   GestureDetector(

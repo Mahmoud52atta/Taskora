@@ -57,8 +57,14 @@ class _DateTimeFieldState extends State<DateTimeField> {
                 InkWell(
                   child: widget.child ??
                       Text(
-                        '${_selectedDate?.day}/${_selectedDate?.month}/${_selectedDate?.year}',
-                        style: FontStyles.fontStyleRegular14(context),
+                        _selectedDate != null
+                            ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+                            : 'Choose due date...',
+                        style: FontStyles.fontStyleRegular14(context).copyWith(
+                          color: _selectedDate != null
+                              ? Colors.black
+                              : Colors.grey[600],
+                        ),
                       ),
                 ),
               ],

@@ -18,6 +18,10 @@ class DioConsumer extends ApiConsumer {
     this.refreshTokenDataSource,
   }) {
     dio.options.baseUrl = EndPoint.baseUrl;
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+    dio.options.sendTimeout = const Duration(seconds: 30);
+
     if (refreshTokenDataSource != null) {
       dio.interceptors.add(ApiInterceptor(
         refreshTokenDataSource: refreshTokenDataSource!,
@@ -61,6 +65,7 @@ class DioConsumer extends ApiConsumer {
         data: isFromData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
+
       return response.data;
     } on DioException catch (e) {
       handleDioExceptions(e);
