@@ -1,4 +1,4 @@
-# 📝 Rebuild To-Do App
+# 📝 Taskora
 
 A modern and responsive To-Do application built using **Flutter**, applying clean architecture, BLoC state management, and API integration.  
 Designed to help users manage their daily tasks with a smooth and animated user interface.
