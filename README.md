@@ -1,16 +1,45 @@
-# to_do_app
+# 📝 Taskora
 
-A new Flutter project.
+A modern and responsive To-Do application built using **Flutter**, applying clean architecture, BLoC state management, and API integration.  
+Designed to help users manage their daily tasks with a smooth and animated user interface.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
 
-A few resources to get you started if this is your first Flutter project:
+- Add / Edit / Delete tasks
+- Mark tasks as complete or pending
+- Filter tasks by status
+- Responsive and adaptive UI
+- Animated transitions
+- Persistent data using API
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📱 Screenshots
+
+| Home Page | Task Details | Add Task |
+|----------|--------------|----------|
+| ![Home](screenshots/home.png) | ![Details](screenshots/details.png) | ![Add](screenshots/add.png) |
+
+> 💡 *Make sure to place your screenshots in a `screenshots` folder in your repo.*
+
+---
+
+## 🛠️ Tech Stack
+
+- **Flutter** - UI SDK
+- **Dart** - Programming language
+- **BLoC / Cubit** - State Management
+- **REST API** - Task data handling
+- **Clean Architecture** - Project structure
+
+---
+
+## 🧑‍💻 Getting Started
+
+1. **Clone the repo:**
+
+```bash
+git clone https://github.com/Mahmoud52atta/rebuild_to_do_app.git
+cd rebuild_to_do_app
