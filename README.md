@@ -18,9 +18,9 @@ Designed to help users manage their daily tasks with a smooth and animated user 
 
 ## 📱 Screenshots
 
-| Home Page | Task Details | Add Task |
+| Home Page | Task Details | Add Task | 
 |----------|--------------|----------|
-| ![Home](screenshots/home.png) | ![Details](screenshots/details.png) | ![Add](screenshots/add.png) |
+| ![Home](https://github.com/Mahmoud52atta/Taskora/blob/main/assets/images/home_view.jpg) | ![Details](screenshots/details.png) | ![Add](screenshots/add.png) |
 
 > 💡 *Make sure to place your screenshots in a `screenshots` folder in your repo.*
 
