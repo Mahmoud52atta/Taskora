@@ -34,47 +34,58 @@ class ImageFieldState extends State<ImageField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (_image != null) ...[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.file(
-              File(_image!.path),
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
-        SizedBox(
-          height: 56,
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            style: ButtonStyle(
-              overlayColor: const WidgetStatePropertyAll(kSecondColor),
-              shape: WidgetStateProperty.all(
-                RoundedRectangleBorder(
+   
+        return Column(
+          children: [
+            if (_image != null) ...[
+              ClipRRect(
                   borderRadius: BorderRadius.circular(16),
+                  child: 
+                  // Image.network(
+                  //   _uploadImageModel!.image,
+                  //   height: 200,
+                  //   width: double.infinity,
+                  //   fit: BoxFit.cover,
+                  // )
+                  Image.file(
+                    File(_image!.path),
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  ),
+              const SizedBox(height: 16),
+            ],
+            SizedBox(
+              height: 56,
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                style: ButtonStyle(
+                  overlayColor: const WidgetStatePropertyAll(kSecondColor),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+                onPressed: _pickImage,
+                icon: Image.asset(
+                  Assets.imagesAddPhoto,
+                  scale: 4.5,
+                ),
+                label: Text(
+                  _image == null ? 'Add Image' : 'Change Image',
+                  style: FontStyles.fontStyleBold16(context)
+                      .copyWith(color: kPrimaryColor, fontSize: 19),
                 ),
               ),
             ),
-            onPressed: _pickImage,
-            icon: Image.asset(
-              Assets.imagesAddPhoto,
-              scale: 4.5,
-            ),
-            label: Text(
-              _image == null ? 'Add Image' : 'Change Image',
-              style: FontStyles.fontStyleBold16(context)
-                  .copyWith(color: kPrimaryColor, fontSize: 19),
-            ),
-          ),
-        ),
-      ],
-    );
+          ],
+        );
+      }
+    
+  String? get selectedImagePath => _imagePath;
   }
 
-  String? get selectedImagePath => _imagePath;
-}
+
+

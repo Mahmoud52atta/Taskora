@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:to_do_app/core/errors/service_errore.dart';
 import 'package:to_do_app/featuers/home/data/data_sources/home_remote_data_source.dart';
+import 'package:to_do_app/featuers/home/data/models/upload_image.dart';
 import 'package:to_do_app/featuers/home/domain/entities/add_task_entity.dart';
 import 'package:to_do_app/featuers/home/domain/entities/edite_entity.dart';
 import 'package:to_do_app/featuers/home/domain/entities/hoem_entity.dart';
@@ -61,5 +62,11 @@ class HomeRepoImpl extends HomeRepo {
       status: status,
       diuDate: diuDate,
     );
+  }
+
+  @override
+  Future<Either<ServerException, UploadImageModel>> uploadImage(
+      {required String image}) {
+    return homeRemoteDataSource.uploadImage(imagePath: image);
   }
 }

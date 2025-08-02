@@ -7,6 +7,7 @@ import 'package:to_do_app/core/errors/service_errore.dart';
 import 'package:to_do_app/featuers/home/data/models/add_task_model.dart';
 import 'package:to_do_app/featuers/home/data/models/edite_model.dart';
 import 'package:to_do_app/featuers/home/data/models/home_model.dart';
+import 'package:to_do_app/featuers/home/data/models/upload_image.dart';
 import 'package:to_do_app/featuers/home/domain/entities/add_task_entity.dart';
 import 'package:to_do_app/featuers/home/domain/entities/edite_entity.dart';
 import 'package:to_do_app/featuers/home/domain/entities/hoem_entity.dart';
@@ -117,6 +118,27 @@ class HomeRemoteDataSource {
       return Left(ServerException(errModel: e.errModel));
     } catch (e) {
       print('Unexpected error during delete: $e');
+      return Left(
+          ServerException(errModel: ErrorModel(errorMessage: e.toString())));
+    }
+  }
+
+  Future<Either<ServerException, UploadImageModel>> uploadImage(
+      {required String imagePath}) async {
+    try {
+      final response = await apiConsumer.post(
+        EndPoint.uploadImage,
+        data: {'image': imagePath},
+      );
+      if (response is Map<String, dynamic>) {
+        return Right(UploadImageModel.fromJson(response));
+      } else {
+        return Left(ServerException(
+            errModel: ErrorModel(errorMessage: 'Invalid response format')));
+      }
+    } on ServerException catch (e) {
+      return Left(ServerException(errModel: e.errModel));
+    } catch (e) {
       return Left(
           ServerException(errModel: ErrorModel(errorMessage: e.toString())));
     }

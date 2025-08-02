@@ -8,6 +8,7 @@ class EndPoint {
   static String editTask = "todos/";
   static String addTask = "todos";
   static String getProfile = "auth/profile";
+  static String uploadImage = "upload/image";
 }
 
 class ApiKey {
